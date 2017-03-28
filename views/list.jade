@@ -1,0 +1,8 @@
+extends layout
+
+block content
+    body
+        h1 times
+        each item in timeList
+            p  Name: #{item.name} | Time: #{item.time}
+            
