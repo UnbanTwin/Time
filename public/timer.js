@@ -1,16 +1,16 @@
 $.fn.downCount = function (options, callback) {
     var settings = $.extend({
-            date: null,
-            offset: null
-        }, options);
+        date: null,
+        offset: null
+    }, options);
 
     // Save container
     var container = this;
 
     /**
-     * Change client's local date to match offset timezone
-     * @return {Object} Fixed Date object.
-     */
+    * Change client's local date to match offset timezone
+    * @return {Object} Fixed Date object.
+    */
     var currentDate = function () {
         // get client's current date
         var date = new Date();
@@ -25,38 +25,38 @@ $.fn.downCount = function (options, callback) {
     };
 
     /**
-     * Main downCount function that calculates everything
-     */
-var original_date = currentDate();
-var target_date = new Date('12/31/2020 12:00:00'); // Count up to this date
+    * Main downCount function that calculates everything
+    */
+    var original_date = currentDate();
+    var target_date = new Date('12/31/2020 12:00:00'); // Count up to this date
 
-function onButtonClick() {
-original_date = currentDate();
-}
-
-function countdown () {
-    var current_date = currentDate(); // get fixed current date
-
-    // difference of dates
-    var difference = current_date - original_date;
-
-    if (current_date >= target_date) {
-        // stop timer
-        clearInterval(interval);
-
-        if (callback && typeof callback === 'function') callback();
-
-        return;
+    function onButtonClick() {
+        original_date = currentDate();
     }
 
-    // basic math variables
-    var _second = 1000,
+    function countdown () {
+        var current_date = currentDate(); // get fixed current date
+
+        // difference of dates
+        var difference = current_date - original_date;
+
+        if (current_date >= target_date) {
+            // stop timer
+            clearInterval(interval);
+
+            if (callback && typeof callback === 'function') callback();
+
+            return;
+        }
+
+        // basic math variables
+        var _second = 1000,
         _minute = _second * 60,
         _hour = _minute * 60,
         _day = _hour * 24;
 
-    // calculate dates
-    var days = Math.floor(difference / _day),
+        // calculate dates
+        days = Math.floor(difference / _day),
         hours = Math.floor((difference % _day) / _hour),
         minutes = Math.floor((difference % _hour) / _minute),
         seconds = Math.floor((difference % _minute) / _second);
@@ -68,10 +68,10 @@ function countdown () {
         seconds = (String(seconds).length >= 2) ? seconds : '0' + seconds;
 
         // based on the date change the refrence wording
-        var ref_days = (days === 1) ? 'day' : 'days',
-            ref_hours = (hours === 1) ? 'hour' : 'hours',
-            ref_minutes = (minutes === 1) ? 'minute' : 'minutes',
-            ref_seconds = (seconds === 1) ? 'second' : 'seconds';
+        ref_days = (days === 1) ? 'day' : 'days',
+        ref_hours = (hours === 1) ? 'hour' : 'hours',
+        ref_minutes = (minutes === 1) ? 'minute' : 'minutes',
+        ref_seconds = (seconds === 1) ? 'second' : 'seconds';
 
         // set to DOM
         container.find('.days').text(days);
@@ -86,13 +86,21 @@ function countdown () {
     };
 
     // start
-    var interval = setInterval(countdown, 1000);
+    interval = setInterval(countdown, 1000);
+
+};
+
+function stopTime() {
+    clearInterval(interval)
+};
+function submit() {
+    $.post( "/post/time/"+document.getElementById("name").value+"/"+"days: " + days + ", hours: "+hours + ", minutes: "+minutes+ ", seconds: " + seconds, function( data ) {
+        console.log(data);
+    });
 };
 
 
 
-
-
 $(document).ready(function(){
-$('.countdown').downCount();
+    $('.countdown').downCount();
 });

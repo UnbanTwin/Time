@@ -4,7 +4,8 @@ block content
     head
         script(type="text/javascript", src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js")
         script(type="text/javascript", src="timer.js")
-        script(type="text/javascript", src="countup_timer.js")
+        link(rel="stylesheet" href="/main.css" type="text/css")
+    
         
     body
         center
@@ -24,6 +25,11 @@ block content
             li
               span.seconds 00
               p.seconds_ref seconds
+            button#stop(onclick="stopTime()") stop
+            br
+            br
+            input#name(placeholder="name")
+            button#submit(onclick="submit()") submit
 
 
         
